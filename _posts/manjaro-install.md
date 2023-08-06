@@ -1,3 +1,4 @@
+ 
 ---
 layout: post
 title: "折腾之 Manjaro 安装使用指北"
@@ -17,12 +18,10 @@ tags:
 
 ## 二、安装
 
-硬件：ThinkPad T480s / i7 8550u / 2560*1440 / NVIDIA MX150/
-
 安装过程简单说，Manjaro 安装非常简单，基本上开箱即用，和其他系统区别不大。
 
 1. 下载 ISO 镜像，[官网地址](https://manjaro.org/download/)
-2. 制作 U 盘启动盘，Windows 推荐 [Rufus](https://rufus.ie/)
+2. 制作 U 盘启动盘，强烈推荐 [Ventoy](https://github.com/ventoy/Ventoy/releases)
 3. U 盘启动安装界面，时区设置为 Asia/Shanghai，语言选择 zh_CN，driver 选择 nonfree。选择 Boot 启动安装；
 4. 进入桌面（此时系统还在 U 盘中，可以体验桌面效果），双击桌面 Install Manjaro Linux 进入系统安装，然后一路按自己需求 next；
 5. 双系统情况下，注意分区选择自定义分区，然后分配 Manjaro 系统分区挂在为/（内存大不需要 swap 分区，一般使用不需要给/home 独立分区，后期调整系统大小也方便），启动分区选择已存在的 EFI system partition，挂在为/boot/efi，并选择保留（默认选项）。
@@ -33,11 +32,12 @@ tags:
 ### 3.1 软件包管理配置
 
   ```bash
-  #国内源，可多次尝试选择速度最快的
-  sudo pacman-mirrors -i -c China -m rank  
-  sudo pacman -Syyu
-  # 配置 archlinux 软件仓库
-  sudo vim /etc/pacman.conf
+#国内源，可多次尝试选择速度最快的
+sudo pacman-mirrors -i -c China -m rank
+#系统更新
+sudo pacman -Syyu
+# 配置 archlinux 软件仓库
+sudo vim /etc/pacman.conf
   ```
 
   ```bash
@@ -81,49 +81,31 @@ tags:
 
 ### 3.3 中文输入法
 
-中文输入法推荐搜狗或者 RIME，注意只能选择其中之一，否则会有兼容性问题（搜狗引起）。
+使用fcitx5即可。
 
 1. 配置使用 fcitx 输入法
 
     ```bash
-    vim ~/.xprofile
+    sudo vim /etc/profile
     ```
 
     ```bash
-    export GTK_IM_MODULE=fcitx
-    export QT_IM_MODULE=fcitx
-    export XMODIFIERS=@im=fcitx
+    export GTK_IM_MODULE=fcitx5
+    export QT_IM_MODULE=fcitx5
+    export XMODIFIERS=@im=fcitx5
     ```
-  
-1. 搜狗输入法
+
+1. 安装输入法
 
     ```bash
-    sudo pacman -S fcitx-configtool fcitx-lilydjwg-git fcitx-sogoupinyin fcitx-qt5
+    sudo pacman -S fcitx5 fcitx5-qt fcitx5-gtk fcitx5-configtool fcitx5-gtk fcitx5-qt
+    #拼音输入法
+    sudo pacman -S fcitx5-chinese-addons fcitx5-pinyin-zhwiki
+    #主题
+    sudo pacman -S fcitx5-pinyin-zhwiki fcitx5-material-color
     ```
+    > 主题设置：前往 Fcitx5设置 -> 配置附加组件 -> 经典用户界面 -> 主题
 
-1. RIME
-
-    ```bash
-    sudo pacman -S fcitx  fcitx-im  fcitx-configtool fcitx-rime
-    ```
-
-    rime 默认输出繁体，通过修改配置解决：
-
-    `vim ~/.config/fcitx/rime/build/luna_pinyin.schema.yaml`
-
-    ```yaml
-    switches:
-      - name: ascii_mode
-        reset: 0
-        states: ["中文", "西文"]
-      - name: full_shape
-        states: ["半角", "全角"]
-      - name: simplification
-        reset: 1   # 添加此行，默认输出简体中文
-        states: ["漢字", "汉字"]
-      - name: ascii_punct
-        states: ["。，", "．，"]
-    ```
 
 ### 3.4 必备字体安装
 
@@ -132,7 +114,7 @@ tags:
   wqy-zenhei adobe-source-code-pro-fonts \
   adobe-source-sans-pro-fonts adobe-source-serif-pro-fonts \
   adobe-source-han-sans-cn-fonts ttf-monaco ttf-dejavu ttf-hanazono \
-  noto-fonts noto-fonts-cjk noto-fonts-emoji 
+  noto-fonts noto-fonts-cjk noto-fonts-emoji
   ```
 
 ### 3.5 双显卡配置
@@ -197,7 +179,7 @@ tags:
 
   ```bash
   sudo pacman -S docker docker-compose
-  
+
   # 设置普通用户使用 Docker 不需要使用 sudo
   sudo groupadd docker
   sudo usermod -aG docker $USER
@@ -246,11 +228,12 @@ tags:
 ```bash
 # 日常
   sudo pacman -S google-chrome
+
   sudo pacman -S netease-cloud-music
   sudo pacman -S filezilla  # FTP/SFTP
-  
+
   sudo pacman -S virtualbox  virtualbox-guest-dkms # 选择当前内核对应版本
-  
+
   sudo pacman -S goldendict # 翻译、取词
     # 不推荐有道词典 高分屏坐标偏移，屏幕取词不便
     # [英汉字典下载](https://github.com/skywind3000/ECDICT/releases)
@@ -258,7 +241,7 @@ tags:
   # 多平台笔记应用，替代印象笔记
   sudo pacman -S joplin
 
-  sudo pacman -S deepin-wine-tim     # qq
+  sudo pacman -S linuxqq             #qq
   sudo pacman -S deepin-wine-wechat  # 微信
 
 # 开发
@@ -287,8 +270,6 @@ tags:
 
 目前使用过 KDE、Gnome、Deepin 三种桌面环境。KDE 界面特效多、自定义程度高，Gnome 简洁直观，建议大家按需选择。
 
-> 使用 Deepin 桌面环境遇到一些问题：关闭屏幕后睡死只能强制重启（3 次）；注销后再次登陆时打开应用会卡半分钟；期间升级 linux kernel 5.0 时，deepin-anything 导致开机无法找到 vfs 模块错误。
-
 1. 安装 KDE
 
     ```bash
@@ -299,12 +280,6 @@ tags:
 
     sudo systemctl enable sddm.service --force
     ```
-
-2. 卸载 DDE
-
-   ```bash
-   sudo pacman -Runs deepin deepin-extra
-   ```
 
 ## 七、其他记录
 
@@ -339,20 +314,16 @@ tags:
 
 ### 7.2 科学上网
 
-  推荐使用 docker 启动 clash 的方式，由 clash 进行全局代理，根据自定义规则选择上网方式。
+  1. 和windows一样的GUI版本：
+  ```
+  yay -S clash-for-windows-bin
+  #启动
+  sudo cfw  --no-sandbox
+  ```
 
-  1. 准备配置文件
-
-      `vim ~/.config/clash/config.yaml`
-
-      配置文件模板请参考：[Hackl0us/SS-Rule-Snippet/clash.yaml](https://github.com/Hackl0us/SS-Rule-Snippet/blob/master/LAZY_RULES/clash.yaml)
-
-      根据模板，添加代理服务器配置，策略组需要增加一个名称为`Proxy`的配置。
-
-  1. 启动 clash 容器
-
+  2. 使用 docker 启动 clash 的方式，由 clash 进行全局代理，根据自定义规则选择上网方式。
+      1. 启动 clash 容器
       准备 docker-compose 文件：`vim ~/.config/clash/docker-compose.yml`
-
       ```yaml
       version: '3'
       services:
@@ -372,8 +343,14 @@ tags:
           network_mode: "host"
           container_name: clash
       ```
-
       启动： `docker-compose -f ~/.config/clash/docker-compose.yml up -d`
+  4. 准备配置文件
+
+      `vim ~/.config/clash/config.yaml`
+
+      配置文件模板请参考：[Hackl0us/SS-Rule-Snippet/clash.yaml](https://github.com/Hackl0us/SS-Rule-Snippet/blob/master/LAZY_RULES/clash.yaml)
+
+      根据模板，添加代理服务器配置，策略组需要增加一个名称为`Proxy`的配置。
 
   1. 配置全局代理
 
