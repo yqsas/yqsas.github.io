@@ -187,8 +187,16 @@ sudo vim /etc/pacman.conf
 ### 4.2 IDE/编辑器
 
   ```bash
-  # IDEA VScode
-  sudo pacman -S intellij-idea-ultimate-edition visual-studio-code-bin
+  # snap
+  sudo pacman -S snapd
+  sudo systemctl enable --now snapd.socket
+  sudo ln -s /var/lib/snapd/snap /snap
+  # IDEA
+  sudo snap install intellij-idea-ultimate --classic
+  # rider
+  sudo snap install rider --classic
+  # vscode
+  sudo pacman -S vscode
   # datagrip 数据库管理
   yay -S datagrip
   sudo pacman -S mysql-workbench
