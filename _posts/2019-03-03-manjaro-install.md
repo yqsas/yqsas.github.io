@@ -1,4 +1,3 @@
- 
 ---
 layout: post
 title: "折腾之 Manjaro 安装使用指北"
@@ -324,25 +323,26 @@ sudo vim /etc/pacman.conf
   2. 使用 docker 启动 clash 的方式，由 clash 进行全局代理，根据自定义规则选择上网方式。
       1. 启动 clash 容器
       准备 docker-compose 文件：`vim ~/.config/clash/docker-compose.yml`
-      ```yaml
-      version: '3'
-      services:
-        clash:
-          image: dreamacro/clash
-          volumes:
-            - ~/.config/clash/config.yaml:/root/.config/clash/config.yaml
-            # dashboard volume
-            # - ./ui:/ui
-          ports:
-            - "7890:7890"
-            - "7891:7891"
-            # If you need external controller, you can export this port.
-            # - "9090:9090"
-          restart: always
-          # When your system is Linux, you can use `network_mode: "host"` directly.
-          network_mode: "host"
-          container_name: clash
-      ```
+
+       ```yaml
+       version: '3'
+       services:
+         clash:
+           image: dreamacro/clash
+           volumes:
+             - ~/.config/clash/config.yaml:/root/.config/clash/config.yaml
+             # dashboard volume
+             # - ./ui:/ui
+           ports:
+             - "7890:7890"
+             - "7891:7891"
+             # If you need external controller, you can export this port.
+             # - "9090:9090"
+           restart: always
+           # When your system is Linux, you can use `network_mode: "host"` directly.
+           network_mode: "host"
+           container_name: clash
+       ```
       启动： `docker-compose -f ~/.config/clash/docker-compose.yml up -d`
   4. 准备配置文件
 
