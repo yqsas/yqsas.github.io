@@ -12,7 +12,7 @@ tags:
 
 ## 前言
 
-项目中有一些第三方或者ASE生成的Shader代码，默认都是用的PBR光照，然而大部分材质仅需类似SimpleLit中使用的BlinnPhong光照模型就够用了，尤其在移动端我们可以考虑优化。  
+项目中有一些第三方或者ASE生成的Shader代码，默认都是用的PBR光照，然而大部分材质BlinnPhong光照模型就够用了，尤其在移动端我们可以考虑优化。  
 如何使用最少的代码，将PBR使用的Metallic流程的材质参数快速转换到BlinnPhong光照呢，今天研究了一会儿效果还行，供大家参考。
 
 ## Shader
