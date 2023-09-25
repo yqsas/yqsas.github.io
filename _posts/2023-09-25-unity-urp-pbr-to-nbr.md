@@ -10,14 +10,14 @@ tags:
   - URP
 ---
 
-## Unity URP Shader PBR 转 BlinnPhong
+## 前言
 
 项目中有一些第三方或者ASE生成的Shader代码，默认都是用的PBR光照，然而大部分材质仅需类似SimpleLit中使用的BlinnPhong光照模型就够用了，尤其在移动端我们可以考虑优化。  
 如何使用最少的代码，将PBR使用的Metallic流程的材质参数快速转换到BlinnPhong光照呢，今天研究了一会儿效果还行，供大家参考。
 
-### Shader
+## Shader
 
-```
+```hlsl
 //BlinnPhong额外加强高光，贴进PBR效果。
 half4 UniversalFragmentBlinnPhongAddSpecular(InputData inputData, half3 diffuse, half4 specularGloss, half smoothness, half smoothnessPower, half3 emission, half alpha)
 {
@@ -96,14 +96,14 @@ half4 MetallicBlinnPhong(InputData inputData, half3 albedo, half3 specularColor,
 }
 ```
 
-### 对比
+## 对比
 
 对比图偷懒就不放了🫣。
 
 我们以 URP 自带的地形着色器 `Universal Render Pipeline/Terrain/Lit` 举个例子。
 
 - 修改前：
-```
+```hlsl
 half4 color = UniversalFragmentPBR(inputData,
                                        albedo,
                                        metallic,
@@ -115,7 +115,7 @@ half4 color = UniversalFragmentPBR(inputData,
 ```
 
 - 修改后
-```
+```hlsl
 half4 color = MetallicBlinnPhong(
                     inputData,
                     albedo,
