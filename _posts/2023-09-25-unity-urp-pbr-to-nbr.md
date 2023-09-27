@@ -18,7 +18,7 @@ tags:
 ## Shader
 
 ```hlsl
-//BlinnPhong额外加强高光，贴进PBR效果。
+//BlinnPhong额外加强高光，贴近PBR效果。
 half4 UniversalFragmentBlinnPhongAddSpecular(InputData inputData, half3 diffuse, half4 specularGloss, half smoothness, half smoothnessPower, half3 emission, half alpha)
 {
     // To ensure backward compatibility we have to avoid using shadowMask input, as it is not present in older shaders
